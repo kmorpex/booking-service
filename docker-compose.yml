@@ -1,0 +1,40 @@
+version: '3.4'
+
+services:
+  # The image being used is the one built from the Dockerfile that we have in the API project
+  govilla.api:
+    image: ${DOCKER_REGISTRY-}govillapi
+    container_name: GoVilla.API
+    build:
+      context: .
+      dockerfile: src/GoVilla.API/Dockerfile
+    depends_on:
+      - govilla-db
+
+  # Database config
+  govilla-db:
+    image: postgres:latest
+    container_name: GoVilla.Db
+    environment:
+      - POSTGRES_DB=govilla
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  # Identity Provider config
+  govilla-idp:
+    image: jboss/keycloak:latest
+    container_name: GoVilla.Identity
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_IMPORT=/tmp/govilla-realm-export.json
+      - DB_VENDOR=h2
+    volumes:
+      - ./.containers/identity:/opt/jboss/keycloak/standalone/data
+      - ./.files/govilla-realm-export.json:/tmp/govilla-realm-export.json
+    ports:
+      - 18080:8080
