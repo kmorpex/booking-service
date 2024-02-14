@@ -21,8 +21,8 @@ This project serves as a robust and domain-focused backend solution, demonstrati
 - Entity Framework Core 8
 - Dapper
 - Unit & Integration Tests + xUnit + FluentAssertions
-- FluentValidator
 - MediatR
+- FluentValidator
 - Postgres
 - Docker & Docker Compose
 
@@ -41,7 +41,7 @@ The project follows the principles of Clean Architecture and Domain-Driven Desig
 - Event Sourcing
 - Unit of Work
 - Repository Pattern
-- Resut Pattern
+- Result Pattern
 
 1. **Domain Layer**: Contains the domain entities, aggregates, value objects, and domain services.
 
